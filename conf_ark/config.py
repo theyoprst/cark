@@ -9,6 +9,7 @@ import yaml
 class Config:
     """Configuration data object."""
     include: List[str]
+    backup_dir: Path
     git_remote: str | None = None
     git_branch: str | None = None
 
@@ -38,12 +39,14 @@ class Config:
         if not include_paths:
             raise ValueError("No paths specified in config file")
 
-        git_config = config_data.get("git", {})
-        git_remote = git_config.get("remote")
-        git_branch = git_config.get("branch")
+        destination = config_data.get("destination", {})
+        backup_dir = Path(destination.get("path", "~/.config-backup")).expanduser()
+        git_remote = destination.get("git_remote")
+        git_branch = destination.get("git_branch")
 
         return cls(
             include=include_paths,
+            backup_dir=backup_dir,
             git_remote=git_remote,
             git_branch=git_branch
         )

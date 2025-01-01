@@ -5,14 +5,11 @@ from pathlib import Path
 from conf_ark.config import Config
 
 
-def backup_configs(backup_dir: str, config: Config) -> None:
+def backup_files(config: Config) -> None:
     """
-    Backup configuration files from user directory.
-
-    Args:
-        backup_dir: Directory where backups will be stored
+    Backup (just copy) configuration files from user directory.
     """
-    backup_dir = Path(backup_dir).expanduser()
+    backup_dir = Path(config.backup_dir).expanduser()
 
     # Create backup directory
     backup_dir.mkdir(parents=True, exist_ok=True)
@@ -37,14 +34,14 @@ def backup_configs(backup_dir: str, config: Config) -> None:
             print(f"Config not found: {src}")
 
 
-def git_init(git_repo: str, config: Config) -> None:
+def git_init(config: Config) -> None:
     """
     Initializes git repository if it was not initialized yet.
     It used branch name from the config.
 
     If the git repository was initialized, it asserts that git branch and git remote are the same as in config
     """
-    repo_path = Path(git_repo).expanduser()
+    repo_path = Path(config.backup_dir).expanduser()
 
     if not (repo_path / '.git').exists():
         # Initialize new repo
@@ -68,11 +65,11 @@ def git_init(git_repo: str, config: Config) -> None:
             f"Git branch mismatch. Expected {config.git_branch}, got {branch}"
 
 
-def git_push(git_repo: str) -> None:
+def git_push(config: Config) -> None:
     """
     Adds all files and pushes to the repository.
     """
-    repo_path = Path(git_repo).expanduser()
+    repo_path = Path(config.backup_dir).expanduser()
     subprocess.run(['git', 'add', '-A'], cwd=repo_path, check=True)
 
     # Check if there are changes to commit
