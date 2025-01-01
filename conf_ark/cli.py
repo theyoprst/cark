@@ -21,8 +21,9 @@ def backup(backup_dir):
 
     config = cfg.Config.from_file("~/.config-backup.yaml")
     bk.backup_configs(backup_dir, config)
+    bk.git_init(backup_dir, config)
+    bk.git_push(backup_dir)
     click.echo(f"Backup completed to {backup_dir}")
-
 
 if __name__ == '__main__':
     main()

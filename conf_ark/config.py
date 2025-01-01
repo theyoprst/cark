@@ -9,6 +9,8 @@ import yaml
 class Config:
     """Configuration data object."""
     include: List[str]
+    git_remote: str | None = None
+    git_branch: str | None = None
 
     @classmethod
     def from_file(cls, path: str | Path) -> "Config":
@@ -36,4 +38,12 @@ class Config:
         if not include_paths:
             raise ValueError("No paths specified in config file")
 
-        return cls(include=include_paths)
+        git_config = config_data.get("git", {})
+        git_remote = git_config.get("remote")
+        git_branch = git_config.get("branch")
+
+        return cls(
+            include=include_paths,
+            git_remote=git_remote,
+            git_branch=git_branch
+        )
