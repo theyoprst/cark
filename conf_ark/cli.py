@@ -1,5 +1,7 @@
 import click
-from conf_ark.backup import backup_configs
+
+import conf_ark.backup as bk
+import conf_ark.config as cfg
 
 
 @click.group()
@@ -16,7 +18,9 @@ def main():
 )
 def backup(backup_dir):
     """Backup configuration files from user directory."""
-    backup_configs(backup_dir)
+
+    config = cfg.Config.from_file("~/.config-backup.yaml")
+    bk.backup_configs(backup_dir, config)
     click.echo(f"Backup completed to {backup_dir}")
 
 

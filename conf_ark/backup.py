@@ -1,11 +1,10 @@
-import os
 import shutil
-from datetime import datetime
 from pathlib import Path
-import yaml
+
+from conf_ark.config import Config
 
 
-def backup_configs(backup_dir: str) -> None:
+def backup_configs(backup_dir: str, config: Config) -> None:
     """
     Backup configuration files from user directory.
 
@@ -17,21 +16,9 @@ def backup_configs(backup_dir: str) -> None:
     # Create backup directory
     backup_dir.mkdir(parents=True, exist_ok=True)
 
-    # Read config paths from YAML file
-    config_file = Path("~/.config-backup.yaml").expanduser()
-    if not config_file.exists():
-        raise FileNotFoundError(f"Config file not found: {config_file}")
-
-    with open(config_file) as f:
-        config_data = yaml.safe_load(f)
-
-    config_paths = config_data.get("include", [])
-    if not config_paths:
-        raise ValueError("No paths specified in config file")
-
     home = Path.home()
 
-    for relpath in config_paths:
+    for relpath in config.include:
         src = home / relpath
         if src.exists():
             dst = backup_dir / relpath
@@ -40,8 +27,10 @@ def backup_configs(backup_dir: str) -> None:
             dst.parent.mkdir(parents=True, exist_ok=True)
 
             if src.is_file():
+                print(f"Copying file: {src}")
                 shutil.copy2(src, dst)
             elif src.is_dir():
+                print(f"Copying directory: {src}")
                 shutil.copytree(src, dst, dirs_exist_ok=True)
         else:
             print(f"Config not found: {src}")
