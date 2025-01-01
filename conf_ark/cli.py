@@ -13,7 +13,7 @@ def main():
 @main.command()
 def backup():
     """Backup configuration files from user directory."""
-    config = cfg.Config.from_file("~/.config-backup.yaml")
+    config = cfg.Config.from_file("~/.config/conf-arc.yaml")
     bk.backup_files(config)
     bk.git_init(config)
     bk.git_push(config)
