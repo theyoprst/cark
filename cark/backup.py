@@ -2,7 +2,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
-from conf_ark.config import Config
+from cark.config import Config
 
 
 def backup_files(config: Config) -> None:

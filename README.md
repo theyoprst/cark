@@ -1,28 +1,29 @@
-# conf-ark
+# cark
 
-A command-line tool to backup and restore configuration files from your user directory.
+Noah's Ark for your configs.
+A command-line tool to backup configuration files from your user directory.
 
 ## Installation
 
-You can install `conf-ark` using Poetry: `poetry install`.
+You can install `cark` using Poetry: `poetry install`.
 
 ## Usage
 
 1. Create a dedicated git repository for configs, e.g. `git@github.com:theyoprst/configs.git`
 
-2. Create a YAML config in `~/.config/conf-arc.yaml`
+2. Create a YAML config in `~/.config/cark.yaml`
 
 ```yaml
 destination:
-  path: ~/.config-backup
+  path: ~/.cark-data
   git_remote: git@github.com:theyoprst/configs.git
   git_branch: personal-laptop
 
 include:
-- .config-backup.yaml # This file.
-- .config/zed/settings.json
+- .config/cark.yaml # This file.
 - .config/fish/config.fish
 - .config/starship.toml
+- .config/zed/settings.json
 - .gitconfig
 - .gitignore
 - .golangci.yaml
@@ -31,7 +32,7 @@ include:
 3. Run backup
 
 ```sh
-poetry run conf-ark backup
+poetry run cark backup
 ```
 
 It will backup all the files and push them to the specified git repository in the specified branch.

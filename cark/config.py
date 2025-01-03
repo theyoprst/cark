@@ -40,7 +40,7 @@ class Config:
             raise ValueError("No paths specified in config file")
 
         destination = config_data.get("destination", {})
-        backup_dir = Path(destination.get("path", "~/.config-backup")).expanduser()
+        backup_dir = Path(destination.get("path", "~/.cark-data")).expanduser()
         git_remote = destination.get("git_remote")
         git_branch = destination.get("git_branch")
 

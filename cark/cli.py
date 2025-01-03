@@ -1,7 +1,7 @@
 import click
 
-import conf_ark.backup as bk
-import conf_ark.config as cfg
+import cark.backup as bk
+import cark.config as cfg
 
 
 @click.group()
@@ -13,7 +13,7 @@ def main():
 @main.command()
 def backup():
     """Backup configuration files from user directory."""
-    config = cfg.Config.from_file("~/.config/conf-arc.yaml")
+    config = cfg.Config.from_file("~/.config/cark.yaml")
     bk.backup_files(config)
     bk.git_init(config)
     bk.git_push(config)
